@@ -4,26 +4,38 @@
  */
 package com.mycompany._prakashpyakurel_server;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+
 /**
  *
  * @author pyaku
  */
 public class Server {
+        private static ServerSocket servSock;
         private static final int PORT = 5000;
         
     public static void main(String[] args) {
         
         System.out.println("Opening port\n");
-        
-        try (ServerSocket servSock = new ServerSocket(PORT)) {
-            System.out.println("Server started on port " + PORT);
-            Socket link = servSock.accept();
-            System.out.println("Client connected: " + link);
-            
-            link.close();
-            
-        } catch (IOException e) {
-            System.out.println("Unable to catch port!");
+        try {
+              servSock = new ServerSocket(PORT);      //Step 1.
+        }    
+        catch(IOException e) 
+        {
+             System.out.println("Unable to attach to port!");
+             System.exit(1);
         }
+
+        do 
+        {
+             run();
+        }while (true);
     }
-}
+
+    private static void run(){
+              
+          }
+      }
+ 
+
