@@ -8,8 +8,8 @@ package com.mycompany._prakashpyakurel_server;
  *
  * @author pyaku
  */
-
-// https://www.geeksforgeeks.org/java-classes-and-objects/
+//Refrences online
+//https://www.geeksforgeeks.org/java/comparable-interface-in-java-with-examples/
 // https://www.baeldung.com/java-classes-objects
 
 // Implements Comparable <EventRecord> so events can be sorted by time.
