@@ -12,12 +12,17 @@ package com.mycompany._prakashpyakurel_server;
 // https://www.geeksforgeeks.org/java-classes-and-objects/
 // https://www.baeldung.com/java-classes-objects
 
-// Represents one event with a date, time, and short description.
-public class EventRecord {
+// Implements Comparable <EventRecord> so events can be sorted by time.
+public class EventRecord implements Comparable<EventRecord>{
+    
+    //variable for each events
     private   String date;
     private   String time;
     private   String description;
 
+    
+    //Constructor 
+    //this constructor is called  when new EventRecord object is created
     public EventRecord(String date, String time, String description) {
         this.date = date;
         this.time = time;
@@ -47,8 +52,10 @@ public class EventRecord {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    //compareTo() method allows to compare the EventRecord object by times and sort the list
     @Override
-    public String toString() {
-        return time + ", " + description;
+  public int compareTo(EventRecord event){
+        return this.time.compareToIgnoreCase(event.time);
     }
 }
