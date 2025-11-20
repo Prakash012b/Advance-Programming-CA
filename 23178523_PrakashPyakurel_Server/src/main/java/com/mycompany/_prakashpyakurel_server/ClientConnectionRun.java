@@ -7,17 +7,28 @@ package com.mycompany._prakashpyakurel_server;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
  *
  * @author pyaku
  */
+//Refrences moodle
+//TCP- Multithreading server from 3rd year ADvance programming moodle
+
+//Refrences online
+//https://www.geeksforgeeks.org/java-multithreaded-servers-in-java/
+//https://www.baeldung.com/a-guide-to-java-sockets
+//https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html
+//https://stackoverflow.com/questions/31463243/regex-for-validating-date-in-dd-mmm-yyyy-format
+//https://stackoverflow.com/questions/33906033/regex-for-time-in-hhmm-am-pm-format
+
 public class ClientConnectionRun implements Runnable {
     private Socket client_link = null;  
     private String clientID;
     
-    public static  ArrayList<EventRecord> eventBoard = new ArrayList<>();;
+    public static  ArrayList<EventRecord> eventRecord = new ArrayList<>();;
     
     //Constructor that accepts a socket connection and a unique clientID
     public ClientConnectionRun(Socket connection, String cID) {
@@ -92,14 +103,84 @@ public class ClientConnectionRun implements Runnable {
                         throw new InvalidCommandException("Please use '-' for time and description fields when listing.");
                     }
                     
-                    // Catch custom exceptions
-                } catch (InvalidCommandException e) {
+                    // SYNCHRONIZED section - prevents multiple threads from modifying the list
+                   
+                    synchronized (eventRecord) {
+                        
+                    //Add new event
+                    if (action.equals("add")) {
+                        eventRecord.add(new EventRecord(date, time, description));
+                    }
+
+                        //Remove an event (if it exist)
+                        else if (action.equals("remove")) {
+                            boolean removed = false;
+                            for (int i = 0; i < eventRecord.size(); i++) {
+                                EventRecord e = eventRecord.get(i);
+                                if (e.getDate().equalsIgnoreCase(date) 
+                                        && e.getTime().equalsIgnoreCase(time) 
+                                        && e.getDescription().equalsIgnoreCase(description)) {
+                                    eventRecord.remove(i);
+                                    removed = true;
+                                    break;
+                                }
+                            }
+                            if (removed == false)
+                                throw new InvalidCommandException("Event does not exist"); //custom exception
+                        }
+
+                        
+                        
+                       //List Sorting
+                       //It filters, sorts and displays the event for selected dates
+                        ArrayList<EventRecord> eventsDate = new ArrayList<>();
+                        for (EventRecord e : eventRecord) {
+                            if (e.getDate().equalsIgnoreCase(date)){
+                                eventsDate.add(e);
+                            }
+                        }
+                        
+                        //Sort the list by time (compareTo from EventRecord)
+                        Collections.sort(eventsDate);
+                        
+                        //Display result to client
+                        if (eventsDate.isEmpty()) {
+                            out.println("There are no events on this date: " + date);
+                        } else {
+                            StringBuilder list = new StringBuilder(date + "; "); 
+                            
+                            //loops through the arraylist and displays each event with the current date
+                            for (int i = 0; i < eventsDate.size(); i++) {
+                                EventRecord e = eventsDate.get(i); 
+                                list.append(e.getTime()).append(", ").append(e.getDescription());
+                                if (i < eventsDate.size() - 1){
+                                    list.append ("; ");
+                                }
+                            }
+                           out.println(list.toString());
+                        }
+                    }
+                } 
+
+                    
+                // Catch custom exceptions
+                catch (InvalidCommandException e) {
                         out.println("InvalidCommandException: " + e.getMessage()); //send custom error back to client
                     }
                 }
 
             } catch (IOException e) {
                 System.out.println("Connection error with " + clientID);
+            }
+            
+            //close connection safely
+            finally {
+                try {
+                    System.out.println("* Closing connection with " + clientID + " *");
+                    client_link.close();
+                } catch (IOException e) {
+                    System.out.println("Unable to close socket properly.");
+                }
             }
         }
     }
