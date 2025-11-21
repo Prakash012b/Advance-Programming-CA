@@ -92,7 +92,7 @@ public class ClientConnectionRun implements Runnable {
                         throw new InvalidCommandException("Incorrect Time Format (1-12 pm/am or 1-12.xy pm/am)");
                     }
 
-                    // Validate date format (eg: 2 November 2024)
+                    // Validate date format (eg: 20 November 2025)
                     if (!action.equals("list") &&
                             !date.matches("(?i)^([1-9]|[12][0-9]|3[01])\\s+(January|February|March|April|May|June|July|August|September|October|November|December)\\s+\\d{4}$")) {
                         throw new InvalidCommandException("Incorrect Date Format (eg: 2 November 2024)");
