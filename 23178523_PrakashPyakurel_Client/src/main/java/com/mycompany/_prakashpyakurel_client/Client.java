@@ -129,13 +129,27 @@ public class Client {
                     } 
                 }
                 
+                else {
+                    out.println(message);          // Send message to server
+                    response = in.readLine();      // Receive response
+                    System.out.println("\n<SERVER RESPONSE> " + response);
+                }
+
+                // Stop command – exit the client loop
+                if (message.equalsIgnoreCase("stop")) {
+                    break;
                 
+                }
             }
+            
+        } catch(IOException e) {
+            
+            System.out.println("Error communicating with the server: " + e.getMessage());
         } 
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        } 
+        
+        
+        
+        //Close socket safely
         finally 
         {
             try 
