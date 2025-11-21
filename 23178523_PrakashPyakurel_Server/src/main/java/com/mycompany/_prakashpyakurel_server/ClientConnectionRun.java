@@ -28,7 +28,7 @@ public class ClientConnectionRun implements Runnable {
     private Socket client_link = null;  
     private String clientID;
     
-    public static  ArrayList<EventRecord> eventRecord = new ArrayList<>();;
+    public static  ArrayList<EventRecord> eventRecord = new ArrayList<>();
     
     //Constructor that accepts a socket connection and a unique clientID
     public ClientConnectionRun(Socket connection, String cID) {
