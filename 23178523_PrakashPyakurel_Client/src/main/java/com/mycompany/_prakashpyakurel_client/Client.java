@@ -8,6 +8,12 @@ import java.io.*;
 import java.net.*;
 
 
+
+//Refrences moodle
+//Tcp, clientside 3rd year moodle 2025 advance programming
+//HttpURLConnection Week 4 Advanced programming
+//https://www.w3schools.com/java/ref_string_substring.asp
+
 /**
  *
  * @author pyaku
