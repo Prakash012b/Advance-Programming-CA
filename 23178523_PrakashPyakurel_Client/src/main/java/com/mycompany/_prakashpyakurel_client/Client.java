@@ -44,15 +44,24 @@ public class Client {
             BufferedReader in = new BufferedReader(new InputStreamReader(link.getInputStream()));
             PrintWriter out = new PrintWriter(link.getOutputStream(),true);
 
-            //Set up stream for keyboard entry...
+            //Set up stream for keyboard entry
             BufferedReader userEntry =new BufferedReader(new InputStreamReader(System.in));
             String message, response;
 
             System.out.println("Enter message to be sent to server: ");
-            message =  userEntry.readLine();
-            out.println(message); 	
-            response = in.readLine();		
-            System.out.println("\nSERVER RESPONSE> " + response);
+            System.out.println("COMMAND FORMAT:");
+            System.out.println("add; date; time; description");
+            System.out.println("remove; date; time; description");
+            System.out.println("list; date; -; -");
+            System.out.println("import; <public .txt URL>");
+            System.out.println("stop");
+            
+            
+            //continuous loop for user input
+            while(true) {
+                System.out.print("\nEnter command: ");
+                message = userEntry.readLine().trim();
+            }
         } 
         catch(IOException e)
         {
