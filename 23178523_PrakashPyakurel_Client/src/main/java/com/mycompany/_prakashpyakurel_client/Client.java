@@ -99,9 +99,29 @@ public class Client {
                             String time = parts[1].trim();
                             String desc = parts[2].trim();
 
+                             // Validate time format (eg: 1.30 pm or 10 am)
+                            if (!time.matches("^([1-9]|1[0-2])(\\.[0-5][0-9])?\\s*([AaPp][Mm])$")) {
+                                System.out.println("Skipped invalid time format: " + line);
+                                skipped++;
+                                continue;
+                            }
+
+                            // Validate date format (eg: 2 November 2025)
+                            if (!date.matches("(?i)^([1-9]|[12][0-9]|3[01])\\s+(January|February|March|April|May|June|July|August|September|October|November|December)\\s+\\d{4}$")) {
+                                System.out.println("Skipped invalid date format: " + line);
+                                skipped++;
+                                continue;
+                            }
                             
-                            
+                             // Send valid event to server
+                            out.println("add; " + date + "; " + time + "; " + desc);
+                            response = in.readLine();
+                            System.out.println("<SERVER RESPONSE> " + response);
+                            imported++;
                         }
+
+                        urlIn.close(); // Close HTTP URL reader
+                        
                     } catch (IOException e) {
                         System.out.println("Error fetching .txt file: " + e.getMessage());
                     System.out.println("\nImported: " + imported + " | Skipped: " + skipped);
