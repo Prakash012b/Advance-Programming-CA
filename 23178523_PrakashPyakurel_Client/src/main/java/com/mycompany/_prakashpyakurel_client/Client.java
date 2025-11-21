@@ -77,7 +77,19 @@ public class Client {
                         BufferedReader urlIn = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
                         String line;
                     
-                    
+                        // Read every line from the URL
+                        while ((line = urlIn.readLine()) != null) {
+                            // Each line should have date; time; description as add action in clientconnect
+                            String[] parts = line.split(";", 3);
+                            int countSemi = 0;
+
+                            // this for loop count semicolons to ensure valid format
+                            for (int i = 0; i < line.length(); i++) {
+                                if (line.charAt(i) == ';') countSemi++;
+                            }
+                            
+                            
+                        }
                     } catch (IOException e) {
                         System.out.println("Error fetching .txt file: " + e.getMessage());
                     System.out.println("\nImported: " + imported + " | Skipped: " + skipped);
