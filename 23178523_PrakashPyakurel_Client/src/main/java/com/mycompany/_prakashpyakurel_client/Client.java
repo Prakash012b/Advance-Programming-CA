@@ -4,15 +4,73 @@
 
 package com.mycompany._prakashpyakurel_client;
 
+import java.io.*;
+import java.net.*;
+
 
 /**
  *
  * @author pyaku
  */
 public class Client {
+    private static InetAddress host;
+    private static final int PORT = 5000; //must match the server port number
+    
+    
+    public static void main(String[] args) {
+        try 
+       {
+          host = InetAddress.getLocalHost(); //get IP for localhost
+       } 
+       catch(UnknownHostException e) 
+       {
+          System.out.println("Host not found!");
+          System.exit(1);
+       }
+       run();
+     }
+    
+    //Connect the client to the server and processes all user commands.
+    private static void run() {
+     Socket link = null;			
+        try 
+        {
+            //Connect to the server through a TCP socket
+            link = new Socket(host,PORT);
+            System.out.println("Connected to event on port" + PORT +"\n");
 
-     public static void main(String[] args) {
-        System.out.println("Hello World!");
+
+            //setup I/O streams for communication
+            BufferedReader in = new BufferedReader(new InputStreamReader(link.getInputStream()));
+            PrintWriter out = new PrintWriter(link.getOutputStream(),true);
+
+            //Set up stream for keyboard entry...
+            BufferedReader userEntry =new BufferedReader(new InputStreamReader(System.in));
+            String message, response;
+
+            System.out.println("Enter message to be sent to server: ");
+            message =  userEntry.readLine();
+            out.println(message); 	
+            response = in.readLine();		
+            System.out.println("\nSERVER RESPONSE> " + response);
+        } 
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        } 
+        finally 
+        {
+            try 
+            {
+                System.out.println("\n* Closing connection... *");
+                link.close();				
+            }catch(IOException e)
+            {
+                System.out.println("Unable to disconnect/close!");
+                System.exit(1);
+            }
+
+        }
     }
-
 } 
+
