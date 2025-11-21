@@ -61,6 +61,31 @@ public class Client {
             while(true) {
                 System.out.print("\nEnter command: ");
                 message = userEntry.readLine().trim();
+                
+                
+                //HTTP to import message from event.txt file and use eventRecord to put them in arraylist
+                if (message.toLowerCase().startsWith("import;")) {
+                    String urlString = message.substring(7).trim(); // Extract link after import
+                    int imported = 0;
+                    int skipped = 0;
+
+                    try{
+                        URL url = new URL(urlString);
+                        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+                        httpCon.setRequestMethod("GET");
+
+                        BufferedReader urlIn = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
+                        String line;
+                    
+                    
+                    } catch (IOException e) {
+                        System.out.println("Error fetching .txt file: " + e.getMessage());
+                    System.out.println("\nImported: " + imported + " | Skipped: " + skipped);
+                    
+                    } 
+                }
+                
+                
             }
         } 
         catch(IOException e)
