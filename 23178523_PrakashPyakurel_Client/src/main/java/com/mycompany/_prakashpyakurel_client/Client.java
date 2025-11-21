@@ -88,6 +88,18 @@ public class Client {
                                 if (line.charAt(i) == ';') countSemi++;
                             }
                             
+                             // Skip malformed lines
+                            if (parts.length != 3 || countSemi != 2) {
+                                System.out.println("Skipped malformed line (expected 3 fields): " + line);
+                                skipped++;
+                                continue;
+                            }
+
+                            String date = parts[0].trim();
+                            String time = parts[1].trim();
+                            String desc = parts[2].trim();
+
+                            
                             
                         }
                     } catch (IOException e) {
